@@ -70,7 +70,7 @@ def generate_random_matrix(n, m):
 
 # Exemple d'utilisation
 n = 600  # Nombre de lignes
-m = 700  # Nombre de colonnes
+m = 1700  # Nombre de colonnes
 random_matrix = generate_random_matrix(n, m)
 
 #print(random_matrix)
