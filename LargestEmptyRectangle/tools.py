@@ -22,7 +22,9 @@ def max_gap(liste):
     return (gaps[key_max], key_max)
 
 
-def display_result(final_rectangle : Rectangle, base_rectangle : Rectangle, set_of_points : SetOfPoint):
+def display_result(results, base_rectangle : Rectangle, set_of_points : SetOfPoint):
+    final_rectangle, solving_time = results
+    ic(final_rectangle, solving_time)
     figure, axis = plt.subplots()
     axis.set_aspect('equal')
     axis.set_xlim(base_rectangle.left_boundary - 1, base_rectangle.right_boundary + 1)
