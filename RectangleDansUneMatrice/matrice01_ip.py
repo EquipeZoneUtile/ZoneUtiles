@@ -79,23 +79,6 @@ def maximalRectangle(matrix):
 
     return max_area, max_coords
 
-
-
-
-n = 16  # Nombre de lignes
-m = 10  # Nombre de colonnes
-random_matrix = generate_random_matrix(n, m)
-
-result = maximalRectangle(random_matrix)
-print(result)
-image = create_image_from_matrix(random_matrix)
-if image:
-    image.show()  # Affiche la plus grande aire de rectangle composée de zéros
-
-
-
-
-
 def create_image_from_matrix(matrix):
     if not matrix:
         return None
@@ -117,3 +100,19 @@ def create_image_from_matrix(matrix):
                 )
 
     return image
+
+
+n = 16  # Nombre de lignes
+m = 10  # Nombre de colonnes
+random_matrix = generate_random_matrix(n, m)
+
+result = maximalRectangle(random_matrix)
+print(result)
+image = create_image_from_matrix(random_matrix)
+if image:
+    image.show()  # Affiche la plus grande aire de rectangle composée de zéros
+
+
+
+
+
