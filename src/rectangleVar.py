@@ -4,7 +4,7 @@ from pointVar import PointVar
 from vectorVar import VectorVar
 from pychoco.variables.variable import Variable
 from pychoco.solution import Solution
-from rectangle import Rectangle
+from rectangle import RectanglePoint
 from maxValue import MAX_VALUE
 from pychoco.variables.intvar import IntVar
 
@@ -46,7 +46,7 @@ class RectangleVar:
         
         A, B, C, D = (p.solution(solution) for p in self.points)
         
-        return Rectangle(A, B, C, D)
+        return RectanglePoint(A, B, C, D)
     
     def get_vars(self) -> list[IntVar]:
 

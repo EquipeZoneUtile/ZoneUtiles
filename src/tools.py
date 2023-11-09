@@ -1,7 +1,7 @@
 import numpy as np
 from icecream import ic
 import matplotlib.pyplot as plt
-from rectangle import Rectangle
+from rectangle import RectangleBoundary
 from setOfPoint import SetOfPoint
 from point import Point
 import random as rd
@@ -22,7 +22,7 @@ def max_gap(liste):
     return (gaps[key_max], key_max)
 
 
-def display_result(results, base_rectangle : Rectangle, set_of_points : SetOfPoint):
+def display_result(results, base_rectangle : RectangleBoundary, set_of_points : SetOfPoint):
     final_rectangle, solving_time = results
     ic(final_rectangle, solving_time)
     figure, axis = plt.subplots()
@@ -36,7 +36,7 @@ def display_result(results, base_rectangle : Rectangle, set_of_points : SetOfPoi
     plt.show()
 
 
-def random_set_of_point(n, base_rectangle : Rectangle):
+def random_set_of_point(n, base_rectangle : RectangleBoundary):
     set_of_point = []
     for i in range(n):
         set_of_point += [Point(rd.randint(base_rectangle.left_boundary, base_rectangle.right_boundary),

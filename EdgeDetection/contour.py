@@ -2,7 +2,7 @@ import cv2
 import matplotlib.pyplot as plt
 
 # Charger l'image en niveaux de gris
-gruyere = cv2.imread('C:\\Users\hmm26\\OneDrive\\Bureau\\IMT_2023_2024\\projet_commande_entrprise\\ZoneUtiles\\EdgeDetection\\gruyere.jpg', 0)  # Charge l'image en niveaux de gris
+gruyere = cv2.imread('C:\\Users\\Baptiste\\Documents\\IMT\\Projet Commande Entreprise\\ZoneUtiles\\EdgeDetection\\gruyere.jpg', 0)  # Charge l'image en niveaux de gris
 #gruyere est un tableau numpy de taille (hauteur x largeur) de l'image qui représente les pixels
 #les pixels ont une valeur entre 0 et 255 qui représente le niveau de gris
 

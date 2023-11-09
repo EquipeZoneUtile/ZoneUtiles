@@ -1,9 +1,11 @@
+import sys
+sys.path.append('src')
 from pychoco import Model
 from icecream import ic
 import matplotlib.pyplot as plt
 from rectangleVar import RectangleVar
 from convexPolygon import ConvexPolygon
-from rectangle import Rectangle
+from rectangle import RectanglePoint
 from point import Point
 from pointVar import PointVar
 from maxValue import MAX_VALUE
@@ -18,7 +20,7 @@ On utlisera pychco et la programmation par contrainte pour résoudre le problèm
 NBR_SOMMETS = 4
 DIMENSION = 2
 
-def affichage(rectangle : Rectangle, polygon : ConvexPolygon):
+def affichage(rectangle : RectanglePoint, polygon : ConvexPolygon):
     fig, ax = plt.subplots()
     boundaries = polygon.get_boundaries(2)
     ax.set_xlim(boundaries[0])
@@ -32,7 +34,7 @@ def affichage(rectangle : Rectangle, polygon : ConvexPolygon):
 model = Model()
 # Données 
 
-convexPolygon = ConvexPolygon([Point(0, 0), Point(0, 10), Point(6, 20), Point(20, 20), Point(34, 18), Point(40, 10), Point(20, 0)])
+convexPolygon = ConvexPolygon([Point(0, 0), Point(0, 5), Point(3, 10), Point(10, 10), Point(17, 9), Point(9, 5), Point(10, 0)])
 
 # Variables
 
