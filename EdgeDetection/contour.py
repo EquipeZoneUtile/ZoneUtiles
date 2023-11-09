@@ -24,9 +24,11 @@ def edges(image):
 
 
 edges_gruyere=edges(gruyere)
-
+'''
 # Afficher l'image binarisée (contours noirs, fond blanc)
 plt.imshow(edges_gruyere, cmap='gray')
 plt.axis('off')
 plt.show()
+'''
+
 
