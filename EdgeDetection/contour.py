@@ -10,7 +10,9 @@ gruyere = cv2.imread('C:\\Users\hmm26\\OneDrive\\Bureau\\IMT_2023_2024\\projet_c
 def edges(image):
     # Appliquer la détection de contours avec Canny
     edges_image = cv2.Canny(image,50,50) 
-    #le premier seuil élimine les grandient qui lui sont inférieur
+    #le premier seuil élimine lespixel dont gradient lui est inférieur : le bruit
+    #le second classe ceux dont le gradient lui est supérieu en contour-fort
+    #entre les deux ce sont les contours-faible
 
     # Inverser les couleurs pour afficher les contours en noir
     edges_image = cv2.bitwise_not(edges_image)
