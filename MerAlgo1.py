@@ -8,6 +8,7 @@ from setOfPoint import SetOfPoint
 from icecream import ic
 import time
 import statistics
+
 TOP_BOURNDARY = 1000
 BOTTOM_BOUNDARY = 0
 LEFT_BOUNDARY = 0

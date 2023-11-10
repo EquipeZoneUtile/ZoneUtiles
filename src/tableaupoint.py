@@ -4,8 +4,12 @@ sys.path.append('./LargestEmptyRectangle')  # Remplacez cela par le chemin réel
 from point import Point
 from contour import edges
 import cv2
+import os
 
-gruyere = cv2.imread('C:\\Users\hmm26\\OneDrive\\Bureau\\IMT_2023_2024\\projet_commande_entrprise\\ZoneUtiles\\EdgeDetection\\gruyere.jpg', 0)  # Charge l'image en niveaux de gris
+chemin_gruyere = os.path.join("test_image", "gruyere.jpg")
+
+
+gruyere = cv2.imread(chemin_gruyere, 0)  # Charge l'image en niveaux de gris
 
 def ExtractionPoint(image):
 
