@@ -35,3 +35,8 @@ results = merAlgo1(base_rectangle, set_of_point)
 # Affichage des résultats
 
 tools.display_result(results, base_rectangle, set_of_point, path_image)
+import os
+
+chemin_gruyere = os.path.join("test_image", "gruyere.jpg")
+
+
