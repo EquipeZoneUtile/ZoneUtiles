@@ -1,15 +1,30 @@
 import cv2
 import matplotlib.pyplot as plt
-
-# Charger l'image en niveaux de gris
-gruyere = cv2.imread('C:\\Users\\Baptiste\\Documents\\IMT\\Projet Commande Entreprise\\ZoneUtiles\\EdgeDetection\\gruyere.jpg', 0)  # Charge l'image en niveaux de gris
-#gruyere est un tableau numpy de taille (hauteur x largeur) de l'image qui représente les pixels
-#les pixels ont une valeur entre 0 et 255 qui représente le niveau de gris
+from tkinter import Tk, filedialog
 
 
-def edges(image):
+def main():
+    root = Tk()
+    root.withdraw()
+    path = filedialog.askopenfilename()
+    plt.subplot(121)
+    plt.imshow(cv2.imread(path))
+    plt.subplot(122)
+    plt.imshow(edges(path, 250), cmap='grey')
+    plt.show()
+
+
+def edges(path : str, seuil : int = 50) -> list[list]:
+    '''
+    Réalise la détection de contour de l'image dont le chemin d'accès est path
+    le paramètre seuil réprésente la précision de la détection.
+    Si il y a du bruit sur le résultat il faut ausgmenter le seuil
+    Si les contours ne sont pas détectés, il faut baisser le paramètre
+    '''
+    # Charger l'image en niveaux de gris
+    image = cv2.imread(path, 0)
     # Appliquer la détection de contours avec Canny
-    edges_image = cv2.Canny(image,50,50) 
+    edges_image = cv2.Canny(image, seuil, seuil) 
     #le premier seuil élimine lespixel dont gradient lui est inférieur : le bruit
     #le second classe ceux dont le gradient lui est supérieu en contour-fort
     #entre les deux ce sont les contours-faible
@@ -23,12 +38,6 @@ def edges(image):
     return edges_image
 
 
-edges_gruyere=edges(gruyere)
-'''
-# Afficher l'image binarisée (contours noirs, fond blanc)
-plt.imshow(edges_gruyere, cmap='gray')
-plt.axis('off')
-plt.show()
-'''
-
+if __name__ == '__main__':
+    main()
 

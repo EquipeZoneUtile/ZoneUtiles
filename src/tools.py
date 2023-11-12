@@ -5,7 +5,7 @@ from rectangle import RectangleBoundary
 from setOfPoint import SetOfPoint
 from point import Point
 import random as rd
-
+import cv2
 
 def max_gap(liste):
     """
@@ -22,17 +22,22 @@ def max_gap(liste):
     return (gaps[key_max], key_max)
 
 
-def display_result(results, base_rectangle : RectangleBoundary, set_of_points : SetOfPoint):
+def display_result(results : tuple[RectangleBoundary, float], base_rectangle : RectangleBoundary,
+                    set_of_point : SetOfPoint, path : str):
     final_rectangle, solving_time = results
     ic(final_rectangle, solving_time)
-    figure, axis = plt.subplots()
-    axis.set_aspect('equal')
-    axis.set_xlim(base_rectangle.left_boundary - 1, base_rectangle.right_boundary + 1)
-    axis.set_ylim(base_rectangle.bottom_boundary - 1, base_rectangle.top_boundary + 1)
-    axis.add_patch(base_rectangle.get_geometric("black"))
-    axis.add_patch(final_rectangle.get_geometric("red"))
-    set_of_points.display(axis)
-
+    figure, axis = plt.subplots(1, 2)
+    ic(axis)
+    axis[0].set_aspect('equal')
+    axis[0].set_xlim(base_rectangle.left_boundary - 1, base_rectangle.right_boundary + 1)
+    axis[0].set_ylim(base_rectangle.bottom_boundary - 1, base_rectangle.top_boundary + 1)
+    axis[0].add_patch(base_rectangle.get_geometric("black"))
+    axis[0].add_patch(final_rectangle.get_geometric("red"))
+    set_of_point.display(axis[0])
+    
+    plt.subplot(122)
+    plt.imshow(cv2.imread(path))
+    axis[1].add_patch(final_rectangle.get_geometric_imshow(base_rectangle.top_boundary, "red"))
     plt.show()
 
 

@@ -12,16 +12,17 @@ TOP_BOURNDARY = 1000
 BOTTOM_BOUNDARY = 0
 LEFT_BOUNDARY = 0
 RIGHT_BOUNDARY = int(1000 * 16 / 9)
-base_rectangle = RectangleBoundary(TOP_BOURNDARY, BOTTOM_BOUNDARY, LEFT_BOUNDARY, RIGHT_BOUNDARY)
+
 NUMBER_OF_POINTS = 2000
-set_of_point = tools.random_set_of_point(NUMBER_OF_POINTS, base_rectangle)
 
 base_rectangle = RectangleBoundary(TOP_BOURNDARY, BOTTOM_BOUNDARY, LEFT_BOUNDARY, RIGHT_BOUNDARY)
+set_of_point = tools.random_set_of_point(NUMBER_OF_POINTS, base_rectangle)
+
 def main():
     results = merAlgo1(base_rectangle, set_of_point)
     tools.display_result(results, base_rectangle, set_of_point)
 
-def merAlgo1(base_rectangle, set_of_point):
+def merAlgo1(base_rectangle, set_of_point) -> tuple[RectangleBoundary, float]:
     
     actual_rectangle = RectangleBoundary(0, 0, 0, 0)
 
@@ -79,8 +80,8 @@ def merAlgo1(base_rectangle, set_of_point):
             maximum_area = actual_area
             final_rectangle = RectangleBoundary(base_rectangle.top_boundary, point.y_coordinate, max_left, min_right)
     end = time.perf_counter()
-    temps_de_calcul = end - start
-    return final_rectangle, temps_de_calcul
+    computing_time = end - start
+    return final_rectangle, computing_time
 
 
 if __name__ == "__main__":
