@@ -1,5 +1,8 @@
 import sys
+
 sys.path.append('src')
+
+from OutLine import Outline
 import tools
 from rectangle import RectangleBoundary
 import matplotlib.pyplot as plt
@@ -9,26 +12,42 @@ from icecream import ic
 import time
 import statistics
 
-TOP_BOURNDARY = 1000
-BOTTOM_BOUNDARY = 0
-LEFT_BOUNDARY = 0
-RIGHT_BOUNDARY = int(1000 * 16 / 9)
 
-NUMBER_OF_POINTS = 2000
-
-base_rectangle = RectangleBoundary(TOP_BOURNDARY, BOTTOM_BOUNDARY, LEFT_BOUNDARY, RIGHT_BOUNDARY)
-set_of_point = tools.random_set_of_point(NUMBER_OF_POINTS, base_rectangle)
 
 def main():
-    results = merAlgo1(base_rectangle, set_of_point)
-    tools.display_result(results, base_rectangle, set_of_point)
 
-def merAlgo1(base_rectangle : RectangleBoundary, set_of_point : SetOfPoint
+    # Définir la taille de la plaque 
+    TOP_BOURNDARY = 10
+    BOTTOM_BOUNDARY = 0
+    LEFT_BOUNDARY = 0
+    RIGHT_BOUNDARY = 10
+
+    NUMBER_OF_POINTS = 2000
+
+    base_rectangle = RectangleBoundary(TOP_BOURNDARY, BOTTOM_BOUNDARY, LEFT_BOUNDARY, RIGHT_BOUNDARY)
+
+    # Créer les contours
+    c = Outline([Point(1, 1), Point(1, 9), Point(9, 9), Point(9, 1)])
+    # ...
+
+    results = merAlgo(base_rectangle, [c]) # Le second parmètre représente la liste des contours
+    tools.display_result(results[:2], base_rectangle, results[2])
+
+def merAlgo(base_rectangle : RectangleBoundary, outlines : list[Outline]
              ) -> tuple[RectangleBoundary, float]:
     
     actual_rectangle = RectangleBoundary(0, 0, 0, 0)
 
+    points = []
+    pointers = {}
+    precision = base_rectangle.get_area()**(0.5) / 100
+
+    for outline in outlines:
+        outline.densify(precision)
+        points += outline.points
+        pointers.update(outline.get_pointers())
     
+    set_of_point = SetOfPoint(points)
 
     start = time.perf_counter()
     # Calcul de la plus grand aire de départ (type 1 vertical)
@@ -40,24 +59,29 @@ def merAlgo1(base_rectangle : RectangleBoundary, set_of_point : SetOfPoint
 
     # Sort S according to the Y coordinates of the points in descending order
     set_of_point.sort_points("y_coordinate", True)
-
+    p1, p2, p3, p4 = (p for p in set_of_point.points[:4])
     for p_index, point in enumerate(set_of_point.points):
+        p4 = point
         actual_rectangle.left_boundary = base_rectangle.left_boundary
         actual_rectangle.right_boundary = base_rectangle.right_boundary
 
         for point_ in set_of_point.points[p_index + 1:]:
+            p3 = point_
             if (actual_rectangle.left_boundary < point_.x_coordinate and point_.x_coordinate < actual_rectangle.right_boundary):
 
                 actual_area = actual_rectangle.get_width() * (point.y_coordinate - point_.y_coordinate)
-                if maximum_area < actual_area:
+                inside = (pointers[p1] == pointers[p2]) and pointers[p1] == pointers[p3] and pointers[p1] == pointers[p4]
+                if maximum_area < actual_area and not(inside):
                     maximum_area = actual_area
                     final_rectangle = RectangleBoundary(point.y_coordinate, point_.y_coordinate,
                                                 actual_rectangle.left_boundary, actual_rectangle.right_boundary)
                     
                 if point_.x_coordinate > point.y_coordinate:
                     actual_rectangle.right_boundary = point_.x_coordinate
+                    p2 = point_
                 else :
                     actual_rectangle.left_boundary = point_.x_coordinate
+                    p1 = point_
         # Type 3 triangles ()
         actual_area = actual_rectangle.get_width() * (point.y_coordinate - base_rectangle.bottom_boundary)
         if maximum_area < actual_area:
@@ -83,7 +107,7 @@ def merAlgo1(base_rectangle : RectangleBoundary, set_of_point : SetOfPoint
             final_rectangle = RectangleBoundary(base_rectangle.top_boundary, point.y_coordinate, max_left, min_right)
     end = time.perf_counter()
     computing_time = end - start
-    return final_rectangle, computing_time
+    return final_rectangle, computing_time, set_of_point
 
 
 if __name__ == "__main__":

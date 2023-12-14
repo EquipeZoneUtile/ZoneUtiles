@@ -7,6 +7,7 @@ from point import Point
 class SetOfPoint:
     def __init__(self, list_of_points : list[Point]) -> None:
         self.points = list_of_points
+        self.lenth = len(self.points)
         
     def __str__(self) -> str:
         resultat = "Set de point : \n"
@@ -34,12 +35,12 @@ class SetOfPoint:
         self.points = sorted(self.points, key = attrgetter(coordinate), reverse= (direction))
         pass
 
-    def get_max(self, coordinate) -> int:
-        '''Renvoie la plus grande abscisse/ordonnée de l'ensemble de points'''
+    def get_max(self, coordinate) -> Point:
+        '''Renvoie le Point de plus grande abscisse/ordonnée de l'ensemble de points'''
         return max(self.points, key = attrgetter(coordinate))
     
-    def get_min(self, coordinate) -> int:
-        '''Renvoie la plus petite abscisse/ordonnée de l'ensemble de points'''
+    def get_min(self, coordinate) -> Point:
+        '''Renvoie le Point de plus petite abscisse/ordonnée de l'ensemble de points'''
         return min(self.points, key = attrgetter(coordinate))
 
 
@@ -48,7 +49,12 @@ class SetOfPoint:
             ax.add_patch(point.get_geometric((ax.get_xlim()[1] - ax.get_xlim()[0])/500))
         pass
 
-
+if __name__ == "__main__":
+    x_coordinates = list(range(10))
+    y_coordinates = list(range(0, 20, 2))
+    set_of_point = SetOfPoint([Point(x, y) for x,y in zip(x_coordinates, y_coordinates)])
+    print(set_of_point)
+    print(set_of_point.get_max('x_coordinate'))
 
 
 

@@ -23,21 +23,19 @@ def max_gap(liste):
 
 
 def display_result(results : tuple[RectangleBoundary, float], base_rectangle : RectangleBoundary,
-                    set_of_point : SetOfPoint, path : str):
+                    set_of_point : SetOfPoint):
     final_rectangle, solving_time = results
-    ic(final_rectangle, solving_time)
-    figure, axis = plt.subplots(1, 2)
-    ic(axis)
-    axis[0].set_aspect('equal')
-    axis[0].set_xlim(base_rectangle.left_boundary - 1, base_rectangle.right_boundary + 1)
-    axis[0].set_ylim(base_rectangle.bottom_boundary - 1, base_rectangle.top_boundary + 1)
-    axis[0].add_patch(base_rectangle.get_geometric("black"))
-    axis[0].add_patch(final_rectangle.get_geometric("red"))
-    set_of_point.display(axis[0])
+    ic(final_rectangle.get_area(), solving_time)
+    figure, axis = plt.subplots()
     
-    plt.subplot(122)
-    plt.imshow(cv2.imread(path))
-    axis[1].add_patch(final_rectangle.get_geometric_imshow(base_rectangle.top_boundary, "red"))
+    axis.set_aspect('equal')
+    axis.set_xlim(base_rectangle.left_boundary - 1, base_rectangle.right_boundary + 1)
+    axis.set_ylim(base_rectangle.bottom_boundary - 1, base_rectangle.top_boundary + 1)
+    axis.add_patch(base_rectangle.get_geometric("black"))
+    axis.add_patch(final_rectangle.get_geometric("red"))
+    set_of_point.display(axis)
+    
+    
     plt.show()
 
 

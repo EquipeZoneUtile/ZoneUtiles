@@ -1,3 +1,4 @@
+import math
 import matplotlib.pyplot as plt
 
 class Point:
@@ -18,14 +19,25 @@ class Point:
         return (self.x_coordinate == __value.x_coordinate) and (self.y_coordinate == __value.y_coordinate)
 
 
-    def get_geometric(self, size):
+    def set(self, point : object):
+            self.x_coordinate = point.x_coordinate
+            self.y_coordinate = point.y_coordinate
+        
+    def get_geometric(self, size, color : str = 'black'):
 
         '''
         Renvoie l'objet matplotlib associé au point
         '''
         
-        return plt.Circle((self.x_coordinate, self.y_coordinate), size, color="black")
+        return plt.Circle((self.x_coordinate, self.y_coordinate), size, color=color)
+    
 
+    def distance(self, __value : object) -> float:
+        '''
+        Renvoie la distance entre les deux points
+        '''
+
+        return math.sqrt((self.x_coordinate - __value.x_coordinate)**2 + (self.y_coordinate - __value.y_coordinate)**2)
 
     
     

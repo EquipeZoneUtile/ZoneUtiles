@@ -1,4 +1,6 @@
 import sys
+
+from MerAlgo2 import merAlgo2
 sys.path.append('src')
 sys.path.append('EdgeDetection')
 
@@ -29,9 +31,8 @@ base_rectangle = RectangleBoundary(top_boundary, 0, 0, right_boundary)  # On ini
                                                                         # dans lequel va se dérouler la résolution
 
 # Résolution :
+#results = merAlgo1(base_rectangle, set_of_point)
 results = merAlgo1(base_rectangle, set_of_point)
-
-
 # Affichage des résultats
 
 tools.display_result(results, base_rectangle, set_of_point, path_image)
