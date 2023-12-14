@@ -31,7 +31,9 @@ class Outline:
     
 
     def __eq__(self, __value: object) -> bool:
-        return self.__base_points == __value.__base_points
+        if isinstance(__value, Outline):
+            return self.__base_points == __value.__base_points
+        return False
     
     def densify(self, precision : float):
         '''

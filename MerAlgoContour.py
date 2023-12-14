@@ -28,12 +28,13 @@ def main():
 
     # Créer les contours
     c = Outline([Point(1, 1), Point(1, 9), Point(9, 9), Point(9, 1)])
+    i = Outline([Point(2, 2), Point(2, 8), Point(8, 8), Point(8, 2)])
     # ...
 
-    results = merAlgo(base_rectangle, [c]) # Le second parmètre représente la liste des contours
+    results = merAlgo(base_rectangle, [c], [i]) # Le second parmètre représente la liste des contours
     tools.display_result(results[:2], base_rectangle, results[2])
 
-def merAlgo(base_rectangle : RectangleBoundary, outlines : list[Outline]
+def merAlgo(base_rectangle : RectangleBoundary, outlines : list[Outline], inner_contours : list[Outline]
              ) -> tuple[RectangleBoundary, float]:
     
     actual_rectangle = RectangleBoundary(0, 0, 0, 0)
@@ -46,6 +47,12 @@ def merAlgo(base_rectangle : RectangleBoundary, outlines : list[Outline]
         outline.densify(precision)
         points += outline.points
         pointers.update(outline.get_pointers())
+    
+    for contours in inner_contours:
+        contours.densify(precision)
+        points += contours.points
+        for point in contours.points:
+            pointers[point] = False
     
     set_of_point = SetOfPoint(points)
 
@@ -70,8 +77,10 @@ def merAlgo(base_rectangle : RectangleBoundary, outlines : list[Outline]
             if (actual_rectangle.left_boundary < point_.x_coordinate and point_.x_coordinate < actual_rectangle.right_boundary):
 
                 actual_area = actual_rectangle.get_width() * (point.y_coordinate - point_.y_coordinate)
-                inside = (pointers[p1] == pointers[p2]) and pointers[p1] == pointers[p3] and pointers[p1] == pointers[p4]
-                if maximum_area < actual_area and not(inside):
+
+                outside = not(pointers[p1] == pointers[p2] and pointers[p1] == pointers[p3] and pointers[p1] == pointers[p4])
+                in_inner = not(pointers[p1] or pointers[p2] or pointers[p3] or pointers[p4])
+                if maximum_area < actual_area and (outside or in_inner):
                     maximum_area = actual_area
                     final_rectangle = RectangleBoundary(point.y_coordinate, point_.y_coordinate,
                                                 actual_rectangle.left_boundary, actual_rectangle.right_boundary)
