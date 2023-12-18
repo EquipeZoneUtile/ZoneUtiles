@@ -17,24 +17,28 @@ import statistics
 def main():
 
     # Définir la taille de la plaque 
-    TOP_BOURNDARY = 10
-    BOTTOM_BOUNDARY = 0
-    LEFT_BOUNDARY = 0
-    RIGHT_BOUNDARY = 10
+    TOP_BOURNDARY = 9.1
+    BOTTOM_BOUNDARY = 0.9
+    LEFT_BOUNDARY = 0.9
+    RIGHT_BOUNDARY = 9.1
 
     NUMBER_OF_POINTS = 2000
 
     base_rectangle = RectangleBoundary(TOP_BOURNDARY, BOTTOM_BOUNDARY, LEFT_BOUNDARY, RIGHT_BOUNDARY)
 
     # Créer les contours
-    c = Outline([Point(1, 1), Point(1, 9), Point(9, 9), Point(9, 1)])
-    i = Outline([Point(2, 2), Point(2, 8), Point(8, 8), Point(8, 2)])
+    c = Outline([Point(1, 1), Point(1, 2), Point(9, 2), Point(9, 1)])
+    c2 = Outline([Point(1, 4), Point(1, 9), Point(9, 9), Point(9, 4)])
+    i = Outline([Point(2, 5), Point(2, 8), Point(8, 8), Point(8, 5)])
     # ...
 
-    results = merAlgo(base_rectangle, [c], [i]) # Le second parmètre représente la liste des contours
+    # Le second parmètre un dictionnaire avec en clé les contours intérieurs 
+    # et en objet la liste des contours interieurs de ce contour
+  
+    results = merAlgo(base_rectangle, {c : [], c2 : [i]})   
     tools.display_result(results[:2], base_rectangle, results[2])
 
-def merAlgo(base_rectangle : RectangleBoundary, outlines : list[Outline], inner_contours : list[Outline]
+def merAlgo(base_rectangle : RectangleBoundary, outlines : dict[Outline, list[Outline]]
              ) -> tuple[RectangleBoundary, float]:
     
     actual_rectangle = RectangleBoundary(0, 0, 0, 0)
@@ -43,16 +47,18 @@ def merAlgo(base_rectangle : RectangleBoundary, outlines : list[Outline], inner_
     pointers = {}
     precision = base_rectangle.get_area()**(0.5) / 100
 
-    for outline in outlines:
+    for outline, inlines in outlines.items():
         outline.densify(precision)
         points += outline.points
-        pointers.update(outline.get_pointers())
+        pointers.update(outline.get_pointers(False))
+        for inline in inlines:
+            inline.densify(precision)
+            points += inline.points
+            pointers.update(inline.get_pointers(True, outline))
     
-    for contours in inner_contours:
-        contours.densify(precision)
-        points += contours.points
-        for point in contours.points:
-            pointers[point] = False
+
+    
+    
     
     set_of_point = SetOfPoint(points)
 
@@ -78,8 +84,14 @@ def merAlgo(base_rectangle : RectangleBoundary, outlines : list[Outline], inner_
 
                 actual_area = actual_rectangle.get_width() * (point.y_coordinate - point_.y_coordinate)
 
-                outside = not(pointers[p1] == pointers[p2] and pointers[p1] == pointers[p3] and pointers[p1] == pointers[p4])
-                in_inner = not(pointers[p1] or pointers[p2] or pointers[p3] or pointers[p4])
+                outside = not(((pointers[p1][0] == pointers[p2][0])) and 
+                              ((pointers[p2][0] == pointers[p3][0])) and
+                              ((pointers[p3][0] == pointers[p4][0])) and
+                              ((pointers[p4][0] == pointers[p1][0])))
+
+                # Si tous les points supports sont dans le même contour et c'est un contour intérieur
+                in_inner = ((pointers[p1][1] == pointers[p2][1])  and pointers[p1][1] == pointers[p3][1] and pointers[p1][1] == pointers[p4][1]) and pointers[p1][1]
+
                 if maximum_area < actual_area and (outside or in_inner):
                     maximum_area = actual_area
                     final_rectangle = RectangleBoundary(point.y_coordinate, point_.y_coordinate,

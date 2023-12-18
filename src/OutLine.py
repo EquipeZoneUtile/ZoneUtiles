@@ -20,6 +20,11 @@ class Outline:
 
 
     def __init__(self, points : list[Point]):
+        '''
+        Mettre en argument une list de Point() dans l'ordre sans faire de boucle
+        
+        ex: pour le triangle ABC rentrer Outline([A, B, C])
+        '''
 
         self.points = points
         self.__base_points = points.copy()
@@ -67,12 +72,14 @@ class Outline:
             self.points.insert(index + i, point)
 
 
-    def get_pointers(self):
+    def get_pointers(self, inner : bool, parent = None):
         '''
         Renvoie un dictionnaire contenant les pointeurs de chanque point vers le contour
         '''
-
-        return {point: self for point in self.points}
+        if parent:
+            return {point: [parent, self] for point in self.points}
+        else :
+            return {point: [self, None] for point in self.points}
 
     def display(self, ax, color = 'black') -> None:
         for point in self.points:
